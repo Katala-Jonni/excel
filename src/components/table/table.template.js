@@ -4,22 +4,31 @@ const CODES = {
 };
 
 function createRow(content, index = '') {
+    // eslint-disable-next-line max-len
+    const resize = index ? '<div class="row-resize" data-resize="row"></div>' : '';
+    // console.log(index, 'createRow');
     return `
-        <div class="row">
-        <div class="row-info">${index}</div>
+        <div class="row" data-type="resizable">
+        <div class="row-info">
+            ${index}
+            ${resize}
+        </div>
         <div class="row-data">${content}</div>
         </div>`;
 }
 
-function toCell(content) {
+function toCell(content, idx) {
     return `
-        <div class="cell" contenteditable>${content}</div>
+        <div class="cell" contenteditable data-col=${idx}>${content}</div>
     `;
 }
 
-function toColumn(content) {
+function toColumn(content, index) {
     return `
-        <div class="column">${content}</div>
+        <div class="column" data-type="resizable" data-col="${index}">
+            ${content}
+            <div class="col-resize" data-resize="col"></div>
+        </div>
     `;
 }
 
@@ -40,7 +49,6 @@ export function createTable(rowsCounts = 20) {
         .fill('')
         .map(toCell)
         .join(' ');
-
 
     rows.push(createRow(cols, ''));
     for (let i = 0; i < rowsCounts; i++) {
