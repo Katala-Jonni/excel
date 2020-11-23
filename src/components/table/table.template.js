@@ -17,10 +17,20 @@ function createRow(content, index = '') {
         </div>`;
 }
 
-function toCell(content, idx) {
-    return `
-        <div class="cell" contenteditable data-col=${idx}>${content}</div>
+function toCell(row) {
+    return (_, col) => {
+        return `
+        <div
+            class="cell"
+            contenteditable
+            data-col=${col}
+            data-type="cell"
+            data-id="${row}:${col}"
+            >
+            
+        </div>
     `;
+    };
 }
 
 function toColumn(content, index) {
@@ -45,14 +55,14 @@ export function createTable(rowsCounts = 20) {
         .map(toColumn)
         .join(' ');
 
-    const cells = new Array(colsCount)
-        .fill('')
-        .map(toCell)
-        .join(' ');
 
     rows.push(createRow(cols, ''));
-    for (let i = 0; i < rowsCounts; i++) {
-        rows.push(createRow(cells, i + 1));
+    for (let row = 0; row < rowsCounts; row++) {
+        const cells = new Array(colsCount)
+            .fill('')
+            .map(toCell(row))
+            .join(' ');
+        rows.push(createRow(cells, row + 1));
     }
 
     return rows.join('');
