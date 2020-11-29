@@ -39,7 +39,6 @@ export class Table extends ExcelComponent {
         this.selectCell(this.$root.find('[data-id="0:0"]'));
 
         this.$on('formula:input', text => {
-            console.log(text);
             this.selection.current
                 .attr('data-value', text)
                 .text(parse(text));
